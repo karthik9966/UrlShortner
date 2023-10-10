@@ -1,5 +1,6 @@
 package com.ttu.urlShortner.utils;
 
+import com.ttu.urlShortner.Exception.FileWritingException;
 import com.ttu.urlShortner.model.CsvData;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -20,7 +21,7 @@ public class CsvWriterUtil {
             try (CSVPrinter csvPrinter = new CSVPrinter(new FileWriter(filePath,true), CSVFormat.DEFAULT)) {
                 csvPrinter.printRecord(csvRecord.getShortUrl(), csvRecord.getLongUrl(), csvRecord.getExpiry());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new FileWritingException("Couldn't write to a file");
             }
         });
     }

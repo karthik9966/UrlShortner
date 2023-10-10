@@ -1,9 +1,14 @@
 package com.ttu.urlShortner.service.csvServiceImplementation;
 
+import com.ttu.urlShortner.Exception.CsvFileNotFoundException;
+import com.ttu.urlShortner.Exception.FileWritingException;
+import com.ttu.urlShortner.Exception.NoSuchRecordException;
+import com.ttu.urlShortner.Exception.ParsingException;
 import com.ttu.urlShortner.model.CsvData;
 import com.ttu.urlShortner.service.CsvService;
 import com.ttu.urlShortner.utils.CsvReaderUtil;
 import com.ttu.urlShortner.utils.CsvWriterUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,7 +23,11 @@ import java.util.stream.Collectors;
 @Service
 public class CommonsCsvImpl implements CsvService {
 
-    private String filePath = "C:\\Users\\navak\\Intellij\\urlShortner\\src\\main\\resources\\ta.csv";
+    @Value("${app.csv.filepath}")
+    private String filePath;
+
+    @Value("${app.date.format}")
+    private String dateFormat;
 
     @Override
     public void writeRecord(List<CsvData> csvDataList)
@@ -26,7 +35,7 @@ public class CommonsCsvImpl implements CsvService {
         try {
             CsvWriterUtil.writeDataToCsv(filePath,csvDataList);
         } catch (IOException e) {
-            throw new RuntimeException("Couldn't write to file");
+            throw new FileWritingException("Couldn't write data to file");
         }
     }
 
@@ -36,7 +45,7 @@ public class CommonsCsvImpl implements CsvService {
         try {
             data=CsvReaderUtil.readCsvData(filePath);
         } catch (IOException e) {
-            throw new RuntimeException("No CSV File found");
+             throw new CsvFileNotFoundException("No CSV file at "+filePath);
         }
         return data;
     }
@@ -50,7 +59,7 @@ public class CommonsCsvImpl implements CsvService {
             try {
                 CsvWriterUtil.writeDataToCsv(filePath,updatedData);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new FileWritingException("Couldn't write data to file");
             }
         });
     }
@@ -60,7 +69,7 @@ public class CommonsCsvImpl implements CsvService {
     {
         List<CsvData> data = readRecords();
         CsvData csvData = data.stream().filter((csvRecord) -> csvRecord.getShortUrl().equals(url)).
-                findFirst().orElseThrow(() -> new RuntimeException("No record found for the given URL"));
+                findFirst().orElseThrow(() -> new NoSuchRecordException("No record found for the given short URL"+url));
         return csvData.getLongUrl();
     }
 
@@ -78,7 +87,7 @@ public class CommonsCsvImpl implements CsvService {
         try {
             CsvWriterUtil.writeDataToCsv(filePath,updatedData);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileWritingException("Couldn't write to file");
         }
     }
 
@@ -94,7 +103,7 @@ public class CommonsCsvImpl implements CsvService {
                 try {
                      date = formatter.parse(newExpiry);
                 } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                    throw new ParsingException("Format Error. Pelase pass date in "+dateFormat);
                 }
                 CsvRecord.setExpiry(date);
             }
@@ -103,7 +112,7 @@ public class CommonsCsvImpl implements CsvService {
         try {
             CsvWriterUtil.writeDataToCsv(filePath,updatedData);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileWritingException("Couldn't write to file");
         }
     }
 }

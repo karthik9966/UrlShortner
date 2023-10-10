@@ -1,10 +1,12 @@
 package com.ttu.urlShortner.service.urlServiceImplementation;
 
+import com.ttu.urlShortner.Exception.ShortUrlGenerationException;
 import com.ttu.urlShortner.model.CsvData;
 import com.ttu.urlShortner.service.CsvService;
 import com.ttu.urlShortner.service.UrlService;
 import com.ttu.urlShortner.service.csvServiceImplementation.CommonsCsvImpl;
 import com.ttu.urlShortner.utils.HashGenerator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,7 +20,11 @@ public class CsvImpl implements UrlService {
     private final HashGenerator hashGenerator;
     private final CsvService csvService;
 
-    private String defaultUrl = "http://localhost:8081/";
+    @Value("${app.url.default}")
+    private String defaultUrl;
+
+    @Value("${app.hashing.algorithm}")
+    private String hashingAlgorithm;
 
     public CsvImpl(HashGenerator hashGenerator, CommonsCsvImpl csvService)
     {
@@ -32,7 +38,7 @@ public class CsvImpl implements UrlService {
         try {
             shortUrl = hashGenerator.hash(longUrl,"SHA-1",8);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Couldn't generate short URL");
+            throw new ShortUrlGenerationException("Couldn't generate short URL as there is no algorithm "+hashingAlgorithm);
         }
         CsvData csvData = new CsvData();
         csvData.setShortUrl(shortUrl);

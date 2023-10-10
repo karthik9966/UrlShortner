@@ -1,8 +1,10 @@
 package com.ttu.urlShortner.utils;
+import com.ttu.urlShortner.Exception.ParsingException;
 import com.ttu.urlShortner.model.CsvData;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,6 +16,10 @@ import java.util.Date;
 import java.util.List;
 
 public class CsvReaderUtil {
+
+    @Value("${app.date.format}")
+    private static String dateFormat;
+
     public static List<CsvData> readCsvData(String filePath) throws IOException {
         List<CsvData> dataList = new ArrayList<>();
 
@@ -34,7 +40,7 @@ public class CsvReaderUtil {
                 dataList.add(csvData);
             }
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            throw new ParsingException("Format Error. Pelase pass date in "+dateFormat);
         }
 
         return dataList;
