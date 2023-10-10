@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 @Component
 public class HashGenerator {
 
-    private static String defaultText = "http://localhost:8080/";
+    private static String defaultText = "http://localhost:8081/";
 
     public static String hash(String input, String algorithm, int length) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance(algorithm);

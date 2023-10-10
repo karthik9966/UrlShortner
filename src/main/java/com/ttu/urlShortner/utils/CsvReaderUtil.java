@@ -6,7 +6,11 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CsvReaderUtil {
@@ -20,13 +24,17 @@ public class CsvReaderUtil {
                 String shortUrl = csvRecord.get(0);
                 String longUrl = csvRecord.get(1);
                 String expiry = csvRecord.get(2);
+                DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+                Date date = formatter.parse(expiry);
 
                 CsvData csvData = new CsvData();
                 csvData.setShortUrl(shortUrl);
                 csvData.setLongUrl(longUrl);
-                csvData.setExpiry(expiry);
+                csvData.setExpiry(date);
                 dataList.add(csvData);
             }
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
 
         return dataList;

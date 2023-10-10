@@ -21,13 +21,13 @@ public class ExpiryCheck {
     @Scheduled(cron = "0 0 2 * * ?")
     public void runDaily()
     {
-        List<CsvData> data = csvService.readRecord();
+        List<CsvData> data = csvService.readRecords();
 
-        List<CsvData> ExpiredUrls = data.stream().filter((csvRecord) -> (new Date().getTime() - csvRecord.getExpiry().getTime()) / 24 * 60 * 60 * 1000 >= 180)
+        List<String> expiredShortUrls = data.stream().filter((csvRecord) -> (new Date().getTime() - csvRecord.getExpiry().getTime()) / 24 * 60 * 60 * 1000 >= 180)
+                .map((csvRecord) -> csvRecord.getShortUrl())
                 .collect(Collectors.toList());
 
-
-
+        csvService.deleteRecords(expiredShortUrls);
 
     }
 

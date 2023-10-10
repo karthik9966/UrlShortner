@@ -1,10 +1,12 @@
 package com.ttu.urlShortner.service;
 
-import com.ttu.urlShortner.utils.Url;
+import java.io.IOException;
 
 public interface UrlService {
 
-    public String getShortUrl(Url longUrl);
+    public String createShortUrl(String longUrl);
 
-    public String redirectToLongUrl(Url shortUrl);
+    public String redirectToLongUrl(String shortUrl);
+
+    public String updateLongUrl(String longUrl, String shortUrl) throws IOException;
 }
