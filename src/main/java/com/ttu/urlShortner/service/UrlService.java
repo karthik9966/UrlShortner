@@ -8,5 +8,7 @@ public interface UrlService {
 
     public String redirectToLongUrl(String shortUrl);
 
-    public String updateLongUrl(String longUrl, String shortUrl) throws IOException;
+    public void updateLongUrl(String longUrl, String shortUrl);
+
+    void updateExpiry(String shortUrl, String newExpiry);
 }

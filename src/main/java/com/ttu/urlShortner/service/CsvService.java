@@ -10,5 +10,6 @@ public interface CsvService {
     public List<CsvData> readRecords();
     public void deleteRecords(List<String> shortUrls);
     public String getLongUrl(String shortUrl);
-    public String updateLongUrl(String longUrl, String shortUrl) throws IOException;
+    public void updateLongUrl(String longUrl, String shortUrl);
+    public void updateNewExpiry(String shortUrl, String NewExpiry);
 }

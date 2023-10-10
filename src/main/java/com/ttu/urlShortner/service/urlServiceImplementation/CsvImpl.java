@@ -45,12 +45,16 @@ public class CsvImpl implements UrlService {
     }
 
     public String redirectToLongUrl(String shortUrl) {
-        System.out.println(defaultUrl + shortUrl);
         return csvService.getLongUrl(defaultUrl+shortUrl);
     }
 
     @Override
-    public String updateLongUrl(String longUrl, String shortUrl) throws IOException {
-        return csvService.updateLongUrl(longUrl,shortUrl);
+    public void updateLongUrl(String longUrl, String shortUrl) {
+        csvService.updateLongUrl(longUrl,shortUrl);
+    }
+
+    @Override
+    public void updateExpiry(String shortUrl, String newExpiry) {
+        csvService.updateNewExpiry(shortUrl,newExpiry);
     }
 }
