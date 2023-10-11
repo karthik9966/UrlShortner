@@ -18,12 +18,15 @@ public class UpdateExpiryApiValidationInterceptor implements HandlerInterceptor 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String requestBody = getRequestBody(request);
+        ObjectMapper objectMapper = new ObjectMapper();
+        UpdateNewExpiryDto newExpiryDto = objectMapper.readValue(requestBody, UpdateNewExpiryDto.class);
         if (requestBody != null && !isValidRequestBody(requestBody)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Bad Request: Invalid request body");
             return false;
         }
-
+        request.setAttribute("body",newExpiryDto);
+        request.setAttribute("Valid",true);
         return true;
     }
 

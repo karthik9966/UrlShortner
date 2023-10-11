@@ -3,6 +3,7 @@ package com.ttu.urlShortner.interceptor;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ttu.urlShortner.Dto.UpdateLongUrlDto;
+import com.ttu.urlShortner.Dto.UpdateNewExpiryDto;
 import com.ttu.urlShortner.Exception.JsonParsingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,12 +19,15 @@ public class UpdateLongUrlApiValidationInterceptor implements HandlerInterceptor
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String requestBody = getRequestBody(request);
+        ObjectMapper objectMapper = new ObjectMapper();
+        UpdateLongUrlDto longUrlDto = objectMapper.readValue(requestBody, UpdateLongUrlDto.class);
         if (requestBody != null && !isValidRequestBody(requestBody)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Bad Request: Invalid request body");
             return false;
         }
-
+        request.setAttribute("body",longUrlDto);
+        request.setAttribute("Valid",true);
         return true;
     }
 

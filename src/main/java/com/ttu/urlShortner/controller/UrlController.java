@@ -21,10 +21,10 @@ public class UrlController {
     }
 
     @PostMapping("/longUrl")
-    @ResponseBody
-    public String createShortUrl(@RequestBody String longUrl)
+    public ResponseEntity<String> createShortUrl(@RequestAttribute String body)
     {
-        return urlService.createShortUrl(longUrl);
+        String shortUrl = urlService.createShortUrl(body);
+        return new ResponseEntity<>(shortUrl,HttpStatus.CREATED);
     }
 
     @GetMapping("/{shortUrl}")
@@ -37,14 +37,15 @@ public class UrlController {
     }
 
     @PatchMapping("/updateLongUrl")
-    public void updateLongUrl(@RequestBody UpdateLongUrlDto request) {
-        urlService.updateLongUrl(request.getNewDestination(),request.getShortUrl());
+    public ResponseEntity updateLongUrl(@RequestAttribute UpdateLongUrlDto body) {
+        urlService.updateLongUrl(body.getNewDestination(),body.getShortUrl());
+        return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
-    // New Expiry has to be passed in "EEE MMM dd HH:mm:ss zzz yyyy" format
     @PatchMapping("/updateExpiry")
-    public void updateExpiry(@RequestBody UpdateNewExpiryDto newExpiry) {
-        urlService.updateExpiry(newExpiry.getShortUrl(),newExpiry.getNewExpiry());
+    public ResponseEntity updateExpiry(@RequestAttribute UpdateNewExpiryDto body) {
+        urlService.updateExpiry(body.getShortUrl(),body.getNewExpiry());
+        return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
 }

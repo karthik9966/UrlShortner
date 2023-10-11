@@ -9,7 +9,6 @@ import com.ttu.urlShortner.utils.HashGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.List;
 @Service
 public class CsvImpl implements UrlService {
 
-    private final HashGenerator hashGenerator;
     private final CsvService csvService;
 
     @Value("${app.url.default}")
@@ -26,9 +24,8 @@ public class CsvImpl implements UrlService {
     @Value("${app.hashing.algorithm}")
     private String hashingAlgorithm;
 
-    public CsvImpl(HashGenerator hashGenerator, CommonsCsvImpl csvService)
+    public CsvImpl(CommonsCsvImpl csvService)
     {
-        this.hashGenerator = hashGenerator;
         this.csvService = csvService;
     }
 
@@ -36,7 +33,7 @@ public class CsvImpl implements UrlService {
     public String createShortUrl(String longUrl) {
         String shortUrl;
         try {
-            shortUrl = hashGenerator.hash(longUrl,hashingAlgorithm,8);
+            shortUrl = HashGenerator.hash(longUrl,hashingAlgorithm,8);
         } catch (NoSuchAlgorithmException e) {
             throw new ShortUrlGenerationException("Couldn't generate short URL as there is no algorithm "+hashingAlgorithm);
         }
