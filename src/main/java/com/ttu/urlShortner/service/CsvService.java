@@ -2,7 +2,6 @@ package com.ttu.urlShortner.service;
 
 import com.ttu.urlShortner.model.CsvData;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface CsvService {

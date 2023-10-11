@@ -1,7 +1,5 @@
 package com.ttu.urlShortner.service;
 
-import java.io.IOException;
-
 public interface UrlService {
 
     public String createShortUrl(String longUrl);

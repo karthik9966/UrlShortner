@@ -36,7 +36,7 @@ public class CsvImpl implements UrlService {
     public String createShortUrl(String longUrl) {
         String shortUrl;
         try {
-            shortUrl = hashGenerator.hash(longUrl,"SHA-1",8);
+            shortUrl = hashGenerator.hash(longUrl,hashingAlgorithm,8);
         } catch (NoSuchAlgorithmException e) {
             throw new ShortUrlGenerationException("Couldn't generate short URL as there is no algorithm "+hashingAlgorithm);
         }

@@ -18,7 +18,6 @@ public class CreateApiValidationInterceptor implements HandlerInterceptor {
                 response.getWriter().write("Bad Request: Invalid request body");
                 return false;
             }
-
             return true;
         }
 
