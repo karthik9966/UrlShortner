@@ -10,12 +10,8 @@ import java.io.IOException;
 
 @Component
 public class CreateApiValidationInterceptor implements HandlerInterceptor {
-
-    public class RequestValidationInterceptor implements HandlerInterceptor {
-
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
             String requestBody = getRequestBody(request);
             if (requestBody != null && !isValidRequestBody(requestBody)) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -46,5 +42,4 @@ public class CreateApiValidationInterceptor implements HandlerInterceptor {
             }
             return buffer.toString();
         }
-    }
 }

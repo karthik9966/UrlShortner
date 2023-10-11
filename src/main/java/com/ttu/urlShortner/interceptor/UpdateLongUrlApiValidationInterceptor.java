@@ -36,7 +36,7 @@ public class UpdateLongUrlApiValidationInterceptor implements HandlerInterceptor
                 return true;
             }
         } catch (Exception e) {
-            throw new JsonParsingException("Unable to parse request body");
+            throw new JsonParsingException("Unable to parse request body!!!");
         }
         return false;
     }
