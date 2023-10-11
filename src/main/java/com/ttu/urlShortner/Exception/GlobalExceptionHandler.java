@@ -16,14 +16,14 @@ public class GlobalExceptionHandler{
     public ResponseEntity<ErrorMessageDto> handleParsingException(ParsingException exception, WebRequest request)
     {
         ErrorMessageDto errorMessage = new ErrorMessageDto(new Date(), exception.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(FileWritingException.class)
     public ResponseEntity<ErrorMessageDto> handleFileWritingException(FileWritingException exception, WebRequest request)
     {
         ErrorMessageDto errorMessage = new ErrorMessageDto(new Date(), exception.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(CsvFileNotFoundException.class)
@@ -45,18 +45,13 @@ public class GlobalExceptionHandler{
     public ResponseEntity<ErrorMessageDto> handleShortUrlGenerationException(ShortUrlGenerationException exception, WebRequest request)
     {
         ErrorMessageDto errorMessage = new ErrorMessageDto(new Date(), exception.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorMessage, HttpStatus.RESET_CONTENT);
     }
 
-
-
-
-
-
-
-
-
-
-
-
+    @ExceptionHandler(JsonParsingException.class)
+    public ResponseEntity<ErrorMessageDto> handleJsonParsingException(JsonParsingException exception, WebRequest request)
+    {
+        ErrorMessageDto errorMessage = new ErrorMessageDto(new Date(), exception.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
 }

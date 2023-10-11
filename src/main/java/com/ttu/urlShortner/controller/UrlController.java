@@ -1,7 +1,7 @@
 package com.ttu.urlShortner.controller;
 
 import com.ttu.urlShortner.Dto.UpdateNewExpiryDto;
-import com.ttu.urlShortner.Dto.UpdateShortUrlDto;
+import com.ttu.urlShortner.Dto.UpdateLongUrlDto;
 import com.ttu.urlShortner.service.UrlService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -37,7 +37,7 @@ public class UrlController {
     }
 
     @PatchMapping("/updateLongUrl")
-    public void updateLongUrl(@RequestBody UpdateShortUrlDto request) {
+    public void updateLongUrl(@RequestBody UpdateLongUrlDto request) {
         urlService.updateLongUrl(request.getNewDestination(),request.getShortUrl());
     }
 

@@ -1,6 +1,6 @@
 package com.ttu.urlShortner.Dto;
 
-public class UpdateShortUrlDto {
+public class UpdateLongUrlDto {
 
     private String shortUrl;
     private String newDestination;
